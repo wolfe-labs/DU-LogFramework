@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+    <label>
+      <input
+        v-model="market.includeBotOrders"
+        type="checkbox"
+        :value="true"
+      />
+      Include bot orders
+    </label>
+    <label>
+      <input
+        v-model="market.includeExpiredOrders"
+        type="checkbox"
+        :value="true"
+      />
+      Include expired orders
+    </label>
+    <div class="table">
+      <table>
+        <thead>
+          <th>Product</th>
+          <th>Market</th>
+          <th>Representative</th>
+          <th>Order</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Order Value</th>
+          <th>Last Changed</th>
+          <th>Expires</th>
+        </thead>
+        <tbody>
+          <tr v-for="order in marketOrdersFiltered">
+            <td>{{ order.itemName }}</td>
+            <td>{{ order.marketName }}</td>
+            <td>{{ order.ownerName }}</a>
+            </td>
+            <td class="t-center">{{ order.orderType }}</td>
+            <td class="t-right">{{ money(order.unitPrice) }}</td>
+            <td class="t-right">{{ numeric(order.orderQuantity) }}</td>
+            <td class="t-right">{{ money(order.unitPrice * order.orderQuantity) }}</td>
+            <td>{{ dateRelative(order.updateDate) }}</td>
+            <td>{{ dateRelative(order.expirationDate) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
