@@ -111,6 +111,15 @@ async function processLogEntry (xmlEntry) {
     console.log(`Event '${ emitterFriendly }' with length ${ message.length }`)
   }
 
+  // Sends to debug channel too
+  framework.socket.emit('debug', {
+    time: new Date(),
+    event: emitterFriendly,
+    source: emitter,
+    length: message.length,
+    preview: message.substr(0, 128),
+  });
+
   // Sends down the message for processing
   framework.emit(emitterFriendly, {
     event: emitterFriendly,

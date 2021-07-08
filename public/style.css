@@ -82,3 +82,30 @@ table td {
 table tbody tr:nth-child(odd) {
   background: var(--color-theme-dark);
 }
+
+select {
+  background: var(--color-theme-dark);
+  color: #fff;
+
+  font: inherit;
+  border-radius: 5px;
+  border: 0px none;
+  padding: 0.25em 0.5em;
+}
+
+#module-selector {
+  background: var(--color-theme-highlight);
+  color: #000;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  padding: 0.5em 0em;
+}
+
+.options > * + * {
+  margin-left: 1em;
+}

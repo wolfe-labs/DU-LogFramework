@@ -13,51 +13,117 @@
 </head>
 <body>
   <div id="app">
-    <label>
-      <input
-        v-model="market.includeBotOrders"
-        type="checkbox"
-        :value="true"
-      />
-      Include bot orders
-    </label>
-    <label>
-      <input
-        v-model="market.includeExpiredOrders"
-        type="checkbox"
-        :value="true"
-      />
-      Include expired orders
-    </label>
-    <div class="table">
-      <table>
-        <thead>
-          <th>Product</th>
-          <th>Market</th>
-          <th>Representative</th>
-          <th>Order</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Order Value</th>
-          <th>Last Changed</th>
-          <th>Expires</th>
-        </thead>
-        <tbody>
-          <tr v-for="order in marketOrdersFiltered">
-            <td>{{ order.itemName }}</td>
-            <td>{{ order.marketName }}</td>
-            <td>{{ order.ownerName }}</a>
-            </td>
-            <td class="t-center">{{ order.orderType }}</td>
-            <td class="t-right">{{ money(order.unitPrice) }}</td>
-            <td class="t-right">{{ numeric(order.orderQuantity) }}</td>
-            <td class="t-right">{{ money(order.unitPrice * order.orderQuantity) }}</td>
-            <td>{{ dateRelative(order.updateDate) }}</td>
-            <td>{{ dateRelative(order.expirationDate) }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <nav>
+      <select
+        id="module-selector"
+        v-model="currentModule"
+      >
+        <option value="market">Market Details</option>
+        <option value="debug">Debug Console</option>
+      </select>
+    </nav>
+    <main>
+      <!-- Debugger -->
+      <section
+        v-if="'debug' === currentModule"
+      >
+        <div class="table">
+          <table>
+            <thead>
+              <th>Time</th>
+              <th>Event</th>
+              <th>Source</th>
+              <th>Size</th>
+              <th>Preview</th>
+            </thead>
+            <tbody>
+              <tr v-for="row in debug.rows">
+                <td>{{ date(row.time) }}</td>
+                <td>{{ row.event }}</td>
+                <td>{{ row.source }}</td>
+                <td>{{ row.length }}</td>
+                <td>{{ row.preview }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Market -->
+      <section
+        v-if="'market' === currentModule"
+      >
+        <div class="options">
+          <label>
+            <select
+              v-model="market.orderType"
+            >
+              <option :value="null">Buy and Sell Orders</option>
+              <option value="buy">Buy Orders Only</option>
+              <option value="sell">Sell Orders Only</option>
+            </select>
+          </label>
+          <label>
+            <select
+              v-model="market.sortBy"
+            >
+              <option :value="null">- Sort By: -</option>
+              <option value="marketName">Market</option>
+              <option value="ownerName">Owner</option>
+              <option value="sortUnitPrice">Price</option>
+              <option value="orderQuantity">Quantity</option>
+              <option value="sortOrderValue">Order Value</option>
+              <option value="updateDate">Update Date</option>
+              <option value="expirationDate">Expiration Date</option>
+            </select>
+          </label>
+          <label>
+            <input
+              v-model="market.includeBotOrders"
+              type="checkbox"
+              :value="true"
+            />
+            Include bot orders
+          </label>
+          <label>
+            <input
+              v-model="market.includeExpiredOrders"
+              type="checkbox"
+              :value="true"
+            />
+            Include expired orders
+          </label>
+        </div>
+        <div class="table">
+          <table>
+            <thead>
+              <th>Product</th>
+              <th>Market</th>
+              <th>Representative</th>
+              <th>Order</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Order Value</th>
+              <th>Last Changed</th>
+              <th>Expires</th>
+            </thead>
+            <tbody>
+              <tr v-for="order in marketOrdersFiltered">
+                <td>{{ order.itemName }}</td>
+                <td>{{ order.marketName }}</td>
+                <td>{{ order.ownerName }}</td>
+                <td class="t-center">{{ order.orderType }}</td>
+                <td class="t-right">{{ money(order.unitPrice) }}</td>
+                <td class="t-right">{{ numeric(order.orderQuantity) }}</td>
+                <td class="t-right">{{ money(order.unitPrice * order.orderQuantity) }}</td>
+                <td>{{ dateRelative(order.updateDate) }}</td>
+                <td>{{ dateRelative(order.expirationDate) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script>
