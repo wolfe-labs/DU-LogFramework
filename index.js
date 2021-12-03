@@ -35,7 +35,7 @@ async function main () {
 
   // Starts reading logs
   console.info('Preparing log file...');
-  const logDir = `${ process.env.HOME }/AppData/Local/NQ/DualUniverse/log/`;
+  const logDir = `${ process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] }/AppData/Local/NQ/DualUniverse/log/`;
   const logFiles = await fs.readdir(logDir);
 
   // Get latest log file
