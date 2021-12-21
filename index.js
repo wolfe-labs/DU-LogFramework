@@ -35,12 +35,18 @@ async function main () {
 
   // Starts reading logs
   console.info('Preparing log file...');
-  const logDir = `${ process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] }/AppData/Local/NQ/DualUniverse/log/`;
+  const logDir = process.env.LOCALAPPDATA
+    ? `${ process.env.LOCALAPPDATA }/NQ/DualUniverse/log/`
+    : `${ process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] }/AppData/Local/NQ/DualUniverse/log/`;
   const logFiles = await fs.readdir(logDir);
+
+  // Sorts logs from earliest to latest
+  logFiles.sort();
 
   // Get latest log file
   const logCurrent = logFiles.pop();
   const logFile = path.join(logDir, logCurrent);
+  console.info(`Selected log file: ${ logFile }`)
 
   // Tail reader starts here
   const logStream = new Tail(logFile);
